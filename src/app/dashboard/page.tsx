@@ -160,7 +160,11 @@ export default function Dashboard() {
     showToast('Starting EHSQ Signal Engine enrichment fetch...');
     
     try {
-      const res = await fetch('/api/run-fetch', { method: 'POST' });
+      const res = await fetch('/api/run-fetch', { 
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ force: true })
+      });
       const data = await res.json();
       if (data && data.logs) {
         setFetchLogs(data.logs);

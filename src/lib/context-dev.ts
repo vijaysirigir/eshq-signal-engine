@@ -9,8 +9,8 @@ export const contextDev = {
   async scrapeUrl(url: string): Promise<ScrapeResult> {
     const apiKey = process.env.CONTEXT_DEV_API_KEY || DEFAULT_API_KEY;
     
-    // Check if we are running in an environment without internet or want to mock certain URLs
-    if (url.includes('example.com') || !apiKey) {
+    // Check if we are running in an environment without internet, want to mock certain URLs, or if it is a plain text label
+    if (url.includes('example.com') || !apiKey || !url.startsWith('http')) {
       return {
         markdown: getMockMarkdownForUrl(url),
         success: true

@@ -14,7 +14,7 @@ export interface PipelineResult {
 }
 
 export const pipeline = {
-  async runFetch(onProgress: (log: string) => void): Promise<PipelineResult> {
+  async runFetch(onProgress: (log: string) => void, forceAll = false): Promise<PipelineResult> {
     const logs: PipelineLog[] = [];
     const addLog = (msg: string) => {
       const stamp = new Date().toLocaleTimeString();
@@ -67,8 +67,13 @@ export const pipeline = {
         // Get URL to scrape (or query label)
         const sourceUrl = src.source_label || `https://example.com/signals/${account.id}/${col.key_name}`;
         
+        // Check if we already have a signal for this account and column key
+        const existingSignals = await dbStore.getSignals(account.id);
+        const hasExistingSignal = existingSignals.some(s => s.column_key === col.key_name);
+
         // Simulating change detection (80% unchanged to mimic cost-triage)
-        const isChanged = Math.random() < 0.45 || account.id === 'meridian' || account.id === 'federal-sa';
+        // Force evaluation if forceAll is true, or if no signal currently exists for this configuration
+        const isChanged = forceAll || !hasExistingSignal || Math.random() < 0.45 || account.id === 'meridian' || account.id === 'federal-sa';
         if (!isChanged) {
           addLog(`Tier 1: [${account.name}] -> [${col.label}] unchanged (skipped escalation).`);
           continue;

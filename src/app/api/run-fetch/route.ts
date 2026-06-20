@@ -9,7 +9,16 @@ export async function POST(req: NextRequest) {
       logs.push(logLine);
     };
 
-    const result = await pipeline.runFetch(onProgress);
+    // Parse force parameter from request body
+    let force = false;
+    try {
+      const body = await req.json();
+      force = body.force === true;
+    } catch (e) {
+      // Body empty or failed to parse, fallback to false
+    }
+
+    const result = await pipeline.runFetch(onProgress, force);
 
     return NextResponse.json({
       success: result.success,
