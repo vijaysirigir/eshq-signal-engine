@@ -245,16 +245,26 @@ export const dbStore = {
   // Accounts
   async getAccounts(): Promise<Account[]> {
     if (supabase) {
-      const { data, error } = await supabase.from('accounts').select('*');
-      if (!error && data) return data;
+      try {
+        const { data, error } = await supabase.from('accounts').select('*');
+        if (!error && data) return data;
+        console.warn('[Supabase] Failed to fetch accounts, falling back to local DB:', error?.message || error);
+      } catch (e: any) {
+        console.warn('[Supabase] Exception fetching accounts, falling back to local DB:', e.message);
+      }
     }
     return getLocalDB().accounts;
   },
 
   async saveAccount(account: Account): Promise<void> {
     if (supabase) {
-      await supabase.from('accounts').upsert(account);
-      return;
+      try {
+        const { error } = await supabase.from('accounts').upsert(account);
+        if (!error) return;
+        console.warn('[Supabase] Failed to save account, falling back to local DB:', error.message);
+      } catch (e: any) {
+        console.warn('[Supabase] Exception saving account, falling back to local DB:', e.message);
+      }
     }
     const db = getLocalDB();
     const idx = db.accounts.findIndex(a => a.id === account.id);
@@ -268,8 +278,13 @@ export const dbStore = {
 
   async deleteAccount(id: string): Promise<void> {
     if (supabase) {
-      await supabase.from('accounts').delete().eq('id', id);
-      return;
+      try {
+        const { error } = await supabase.from('accounts').delete().eq('id', id);
+        if (!error) return;
+        console.warn('[Supabase] Failed to delete account, falling back to local DB:', error.message);
+      } catch (e: any) {
+        console.warn('[Supabase] Exception deleting account, falling back to local DB:', e.message);
+      }
     }
     const db = getLocalDB();
     db.accounts = db.accounts.filter(a => a.id !== id);
@@ -281,8 +296,13 @@ export const dbStore = {
 
   async bulkDeleteAccounts(ids: string[]): Promise<void> {
     if (supabase) {
-      await supabase.from('accounts').delete().in('id', ids);
-      return;
+      try {
+        const { error } = await supabase.from('accounts').delete().in('id', ids);
+        if (!error) return;
+        console.warn('[Supabase] Failed to bulk delete accounts, falling back to local DB:', error.message);
+      } catch (e: any) {
+        console.warn('[Supabase] Exception bulk deleting accounts, falling back to local DB:', e.message);
+      }
     }
     const db = getLocalDB();
     db.accounts = db.accounts.filter(a => !ids.includes(a.id));
@@ -295,16 +315,26 @@ export const dbStore = {
   // Signal Columns
   async getColumns(): Promise<SignalColumn[]> {
     if (supabase) {
-      const { data, error } = await supabase.from('signal_columns').select('*');
-      if (!error && data) return data;
+      try {
+        const { data, error } = await supabase.from('signal_columns').select('*');
+        if (!error && data) return data;
+        console.warn('[Supabase] Failed to fetch columns, falling back to local DB:', error?.message || error);
+      } catch (e: any) {
+        console.warn('[Supabase] Exception fetching columns, falling back to local DB:', e.message);
+      }
     }
     return getLocalDB().columns;
   },
 
   async saveColumn(col: SignalColumn): Promise<void> {
     if (supabase) {
-      await supabase.from('signal_columns').upsert(col);
-      return;
+      try {
+        const { error } = await supabase.from('signal_columns').upsert(col);
+        if (!error) return;
+        console.warn('[Supabase] Failed to save column, falling back to local DB:', error.message);
+      } catch (e: any) {
+        console.warn('[Supabase] Exception saving column, falling back to local DB:', e.message);
+      }
     }
     const db = getLocalDB();
     const idx = db.columns.findIndex(c => c.key_name === col.key_name);
@@ -319,10 +349,15 @@ export const dbStore = {
   // Account Sources
   async getSources(accountId?: string): Promise<AccountSource[]> {
     if (supabase) {
-      const query = supabase.from('account_sources').select('*');
-      if (accountId) query.eq('account_id', accountId);
-      const { data, error } = await query;
-      if (!error && data) return data;
+      try {
+        const query = supabase.from('account_sources').select('*');
+        if (accountId) query.eq('account_id', accountId);
+        const { data, error } = await query;
+        if (!error && data) return data;
+        console.warn('[Supabase] Failed to fetch sources, falling back to local DB:', error?.message || error);
+      } catch (e: any) {
+        console.warn('[Supabase] Exception fetching sources, falling back to local DB:', e.message);
+      }
     }
     const sources = getLocalDB().sources;
     if (accountId) return sources.filter(s => s.account_id === accountId);
@@ -331,8 +366,13 @@ export const dbStore = {
 
   async saveSource(src: AccountSource): Promise<void> {
     if (supabase) {
-      await supabase.from('account_sources').upsert(src);
-      return;
+      try {
+        const { error } = await supabase.from('account_sources').upsert(src);
+        if (!error) return;
+        console.warn('[Supabase] Failed to save source, falling back to local DB:', error.message);
+      } catch (e: any) {
+        console.warn('[Supabase] Exception saving source, falling back to local DB:', e.message);
+      }
     }
     const db = getLocalDB();
     const idx = db.sources.findIndex(s => s.account_id === src.account_id && s.column_key === src.column_key);
@@ -347,10 +387,15 @@ export const dbStore = {
   // Detected Signals
   async getSignals(accountId?: string): Promise<DetectedSignal[]> {
     if (supabase) {
-      const query = supabase.from('detected_signals').select('*');
-      if (accountId) query.eq('account_id', accountId);
-      const { data, error } = await query;
-      if (!error && data) return data;
+      try {
+        const query = supabase.from('detected_signals').select('*');
+        if (accountId) query.eq('account_id', accountId);
+        const { data, error } = await query;
+        if (!error && data) return data;
+        console.warn('[Supabase] Failed to fetch signals, falling back to local DB:', error?.message || error);
+      } catch (e: any) {
+        console.warn('[Supabase] Exception fetching signals, falling back to local DB:', e.message);
+      }
     }
     const signals = getLocalDB().signals;
     if (accountId) return signals.filter(s => s.account_id === accountId);
@@ -359,8 +404,13 @@ export const dbStore = {
 
   async saveSignal(sig: DetectedSignal): Promise<void> {
     if (supabase) {
-      await supabase.from('detected_signals').upsert(sig);
-      return;
+      try {
+        const { error } = await supabase.from('detected_signals').upsert(sig);
+        if (!error) return;
+        console.warn('[Supabase] Failed to save signal, falling back to local DB:', error.message);
+      } catch (e: any) {
+        console.warn('[Supabase] Exception saving signal, falling back to local DB:', e.message);
+      }
     }
     const db = getLocalDB();
     const idx = db.signals.findIndex(s => s.account_id === sig.account_id && s.column_key === sig.column_key);
@@ -375,10 +425,15 @@ export const dbStore = {
   // CRM settings per account
   async getCrmSettings(accountId?: string): Promise<CrmSettings[]> {
     if (supabase) {
-      const query = supabase.from('account_crm_settings').select('*');
-      if (accountId) query.eq('account_id', accountId);
-      const { data, error } = await query;
-      if (!error && data) return data;
+      try {
+        const query = supabase.from('account_crm_settings').select('*');
+        if (accountId) query.eq('account_id', accountId);
+        const { data, error } = await query;
+        if (!error && data) return data;
+        console.warn('[Supabase] Failed to fetch CRM settings, falling back to local DB:', error?.message || error);
+      } catch (e: any) {
+        console.warn('[Supabase] Exception fetching CRM settings, falling back to local DB:', e.message);
+      }
     }
     const settings = getLocalDB().crmSettings;
     if (accountId) return settings.filter(s => s.account_id === accountId);
@@ -387,8 +442,13 @@ export const dbStore = {
 
   async saveCrmSettings(settings: CrmSettings): Promise<void> {
     if (supabase) {
-      await supabase.from('account_crm_settings').upsert(settings);
-      return;
+      try {
+        const { error } = await supabase.from('account_crm_settings').upsert(settings);
+        if (!error) return;
+        console.warn('[Supabase] Failed to save CRM settings, falling back to local DB:', error.message);
+      } catch (e: any) {
+        console.warn('[Supabase] Exception saving CRM settings, falling back to local DB:', e.message);
+      }
     }
     const db = getLocalDB();
     const idx = db.crmSettings.findIndex(c => c.account_id === settings.account_id);
@@ -403,16 +463,26 @@ export const dbStore = {
   // Knowledge Base
   async getKnowledgeBase(): Promise<KnowledgeBaseItem[]> {
     if (supabase) {
-      const { data, error } = await supabase.from('knowledge_base').select('*');
-      if (!error && data) return data;
+      try {
+        const { data, error } = await supabase.from('knowledge_base').select('*');
+        if (!error && data) return data;
+        console.warn('[Supabase] Failed to fetch knowledge base, falling back to local DB:', error?.message || error);
+      } catch (e: any) {
+        console.warn('[Supabase] Exception fetching knowledge base, falling back to local DB:', e.message);
+      }
     }
     return getLocalDB().knowledgeBase;
   },
 
   async saveKnowledgeBaseItem(item: KnowledgeBaseItem): Promise<void> {
     if (supabase) {
-      await supabase.from('knowledge_base').upsert(item);
-      return;
+      try {
+        const { error } = await supabase.from('knowledge_base').upsert(item);
+        if (!error) return;
+        console.warn('[Supabase] Failed to save knowledge base item, falling back to local DB:', error.message);
+      } catch (e: any) {
+        console.warn('[Supabase] Exception saving knowledge base item, falling back to local DB:', e.message);
+      }
     }
     const db = getLocalDB();
     const idx = db.knowledgeBase.findIndex(kb => kb.id === item.id);
@@ -427,13 +497,18 @@ export const dbStore = {
   // Admin Settings
   async getAdminSettings(): Promise<Record<string, any>> {
     if (supabase) {
-      const { data, error } = await supabase.from('admin_settings').select('*');
-      if (!error && data) {
-        const result: Record<string, any> = {};
-        data.forEach(item => {
-          result[item.key] = item.value;
-        });
-        return result;
+      try {
+        const { data, error } = await supabase.from('admin_settings').select('*');
+        if (!error && data) {
+          const result: Record<string, any> = {};
+          data.forEach(item => {
+            result[item.key] = item.value;
+          });
+          return result;
+        }
+        console.warn('[Supabase] Failed to fetch admin settings, falling back to local DB:', error?.message || error);
+      } catch (e: any) {
+        console.warn('[Supabase] Exception fetching admin settings, falling back to local DB:', e.message);
       }
     }
     return getLocalDB().adminSettings;
@@ -441,8 +516,13 @@ export const dbStore = {
 
   async saveAdminSetting(key: string, value: any): Promise<void> {
     if (supabase) {
-      await supabase.from('admin_settings').upsert({ key, value });
-      return;
+      try {
+        const { error } = await supabase.from('admin_settings').upsert({ key, value });
+        if (!error) return;
+        console.warn('[Supabase] Failed to save admin setting, falling back to local DB:', error.message);
+      } catch (e: any) {
+        console.warn('[Supabase] Exception saving admin setting, falling back to local DB:', e.message);
+      }
     }
     const db = getLocalDB();
     db.adminSettings[key] = value;
@@ -452,16 +532,26 @@ export const dbStore = {
   // CRM Sync Logs
   async getCrmSyncLogs(): Promise<CrmSyncLog[]> {
     if (supabase) {
-      const { data, error } = await supabase.from('salesforce_sync_logs').select('*');
-      if (!error && data) return data;
+      try {
+        const { data, error } = await supabase.from('salesforce_sync_logs').select('*');
+        if (!error && data) return data;
+        console.warn('[Supabase] Failed to fetch CRM sync logs, falling back to local DB:', error?.message || error);
+      } catch (e: any) {
+        console.warn('[Supabase] Exception fetching CRM sync logs, falling back to local DB:', e.message);
+      }
     }
     return getLocalDB().crmSyncLogs;
   },
 
   async saveCrmSyncLog(log: CrmSyncLog): Promise<void> {
     if (supabase) {
-      await supabase.from('salesforce_sync_logs').insert(log);
-      return;
+      try {
+        const { error } = await supabase.from('salesforce_sync_logs').insert(log);
+        if (!error) return;
+        console.warn('[Supabase] Failed to save CRM sync log, falling back to local DB:', error.message);
+      } catch (e: any) {
+        console.warn('[Supabase] Exception saving CRM sync log, falling back to local DB:', e.message);
+      }
     }
     const db = getLocalDB();
     db.crmSyncLogs.push(log);

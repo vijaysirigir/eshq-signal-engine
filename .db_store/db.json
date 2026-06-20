@@ -1,5 +1,32 @@
 {
-  "accounts": [],
+  "accounts": [
+    {
+      "id": "csv-1781979968447-1",
+      "name": "\"Titan Aerospace Operations\"",
+      "group_code": "MW",
+      "is_child": false,
+      "is_customer": false,
+      "segments": [
+        "commercial",
+        "enterprise"
+      ],
+      "owner_email": "rep.titan@ehsqsignalengine.com",
+      "crm_connected": false
+    },
+    {
+      "id": "csv-1781979968923-2",
+      "name": "\"Mercy Health Group\"",
+      "group_code": "SE",
+      "is_child": false,
+      "is_customer": false,
+      "segments": [
+        "healthcare",
+        "enterprise"
+      ],
+      "owner_email": "rep.mercy@ehsqsignalengine.com",
+      "crm_connected": false
+    }
+  ],
   "columns": [
     {
       "key_name": "rfp",
@@ -109,9 +136,102 @@
       ]
     }
   ],
-  "sources": [],
-  "crmSettings": [],
-  "signals": [],
+  "sources": [
+    {
+      "account_id": "csv-1781979968447-1",
+      "column_key": "rfp",
+      "status": "auto",
+      "source_label": "Auto-resolved via EHSQ web search for \"Titan Aerospace Operations\""
+    },
+    {
+      "account_id": "csv-1781979968447-1",
+      "column_key": "enforcement",
+      "status": "missing"
+    },
+    {
+      "account_id": "csv-1781979968447-1",
+      "column_key": "budget",
+      "status": "auto",
+      "source_label": "Auto-resolved via EHSQ web search for \"Titan Aerospace Operations\""
+    },
+    {
+      "account_id": "csv-1781979968447-1",
+      "column_key": "hiring",
+      "status": "auto",
+      "source_label": "Auto-resolved via EHSQ web search for \"Titan Aerospace Operations\""
+    },
+    {
+      "account_id": "csv-1781979968447-1",
+      "column_key": "accreditation",
+      "status": "auto",
+      "source_label": "Auto-resolved via EHSQ web search for \"Titan Aerospace Operations\""
+    },
+    {
+      "account_id": "csv-1781979968923-2",
+      "column_key": "rfp",
+      "status": "auto",
+      "source_label": "Auto-resolved via EHSQ web search for \"Mercy Health Group\""
+    },
+    {
+      "account_id": "csv-1781979968923-2",
+      "column_key": "enforcement",
+      "status": "auto",
+      "source_label": "Auto-resolved via EHSQ web search for \"Mercy Health Group\""
+    },
+    {
+      "account_id": "csv-1781979968923-2",
+      "column_key": "budget",
+      "status": "auto",
+      "source_label": "Auto-resolved via EHSQ web search for \"Mercy Health Group\""
+    },
+    {
+      "account_id": "csv-1781979968923-2",
+      "column_key": "hiring",
+      "status": "missing"
+    },
+    {
+      "account_id": "csv-1781979968923-2",
+      "column_key": "accreditation",
+      "status": "auto",
+      "source_label": "Auto-resolved via EHSQ web search for \"Mercy Health Group\""
+    }
+  ],
+  "crmSettings": [
+    {
+      "account_id": "csv-1781979968447-1",
+      "crm_type": "none",
+      "sync_direction": "none",
+      "sync_field": ""
+    },
+    {
+      "account_id": "csv-1781979968923-2",
+      "crm_type": "none",
+      "sync_direction": "none",
+      "sync_field": ""
+    }
+  ],
+  "signals": [
+    {
+      "account_id": "csv-1781979968447-1",
+      "column_key": "budget",
+      "score": 10,
+      "signal_date": "just now",
+      "summary": "\"Titan Aerospace Operations\" approved a capital allocation of $3.8M for compliance technology modernization.",
+      "why_matters": "\"Titan Aerospace Operations\" approved a $3.8M budget for EHSQ software and compliance technology modernization. This maps directly to operational compliance, incident logging, and audit management. Sales should initiate early outreach to shape their vendor evaluation and present a unified safety and compliance solution before the formal procurement window opens.",
+      "source_name": "Web Search",
+      "excerpt": "\"...allocates $3.8M for modernization of operational compliance tracking and reporting infrastructure, replacing legacy case management tools...\""
+    },
+    {
+      "account_id": "csv-1781979968923-2",
+      "column_key": "budget",
+      "score": 10,
+      "signal_date": "just now",
+      "summary": "\"Mercy Health Group\" approved a capital allocation of $3.8M for compliance technology modernization.",
+      "why_matters": "\"Mercy Health Group\" approved a $3.8M budget for EHSQ software and compliance technology modernization. This maps directly to operational compliance, incident logging, and audit management. Sales should initiate early outreach to shape their vendor evaluation and present a unified safety and compliance solution before the formal procurement window opens.",
+      "source_name": "Web Search",
+      "excerpt": "\"...allocates $3.8M for modernization of operational compliance tracking and reporting infrastructure, replacing legacy case management tools...\""
+    }
+  ],
   "knowledgeBase": [],
   "adminSettings": {
     "modelSpeed": "standard",
@@ -120,10 +240,10 @@
     "outputOwnerEnabled": true,
     "outputRevopsEnabled": true,
     "revopsEmail": "revops@ehsqsignalengine.com",
-    "spendThisWeek": "0.00",
+    "spendThisWeek": "0.03",
     "syncsToday": 0,
-    "autoResolvedThisWeek": 0,
-    "pendingReviewThisWeek": 0
+    "autoResolvedThisWeek": 8,
+    "pendingReviewThisWeek": 2
   },
   "crmSyncLogs": []
 }
