@@ -1,103 +1,129 @@
 {
-  "accounts": [
+  "accounts": [],
+  "columns": [
     {
-      "id": "acme-parent",
-      "name": "Acme Industrial Group",
-      "group_code": "MW",
-      "is_child": false,
-      "is_customer": true,
+      "key_name": "rfp",
+      "label": "RFP / Tender",
+      "has_prompt": true,
+      "is_active": true,
+      "prompt": "Score 1-10: does this notice describe a software RFP/RFI for EHSQ/ESHQ solutions (safety, compliance, quality, audit, incident tracking)? Cite notice ID and issuing organization.",
+      "source_type": "api",
+      "context_depth": false,
+      "threshold": 7,
+      "budget": 10,
+      "cadence": "Daily",
       "segments": [
         "commercial",
-        "enterprise"
-      ],
-      "owner_email": "sarah.chen@yourcompany.io",
-      "crm_connected": true
+        "enterprise",
+        "gov",
+        "healthcare"
+      ]
     },
     {
-      "id": "acme-ops",
-      "name": "Acme Industrial — Operations Div.",
-      "group_code": "MW",
-      "is_child": true,
-      "is_customer": false,
-      "segments": [
-        "commercial"
-      ],
-      "owner_email": "sarah.chen@yourcompany.io",
-      "crm_connected": true
-    },
-    {
-      "id": "meridian",
-      "name": "Meridian Environmental Services",
-      "group_code": "SW",
-      "is_child": false,
-      "is_customer": false,
+      "key_name": "enforcement",
+      "label": "Enforcement / Fines",
+      "has_prompt": true,
+      "is_active": true,
+      "prompt": "Identify enforcement actions against the account's own facilities. Score severity 1-10 and note if it represents an EHSQ risk (OSHA, EPA citations) that safety software could prevent.",
+      "source_type": "api",
+      "context_depth": true,
+      "threshold": 6,
+      "budget": 10,
+      "cadence": "Weekly",
       "segments": [
         "commercial",
-        "enterprise"
-      ],
-      "owner_email": "james.wu@yourcompany.io",
-      "crm_connected": true
+        "enterprise",
+        "gov",
+        "healthcare"
+      ]
     },
     {
-      "id": "westbrook",
-      "name": "Westbrook Health System",
-      "group_code": "SE",
-      "is_child": false,
-      "is_customer": false,
+      "key_name": "budget",
+      "label": "Budget signal",
+      "has_prompt": true,
+      "is_active": true,
+      "prompt": "Extract any budget line item referencing compliance, safety, environmental, quality, or technology modernization. Score 1-10 on dollar amount and EHSQ systems relevance.",
+      "source_type": "websearch",
+      "context_depth": true,
+      "threshold": 7,
+      "budget": 8,
+      "cadence": "Monthly",
+      "segments": [
+        "commercial",
+        "enterprise",
+        "gov",
+        "healthcare"
+      ]
+    },
+    {
+      "key_name": "hiring",
+      "label": "Hiring",
+      "has_prompt": true,
+      "is_active": true,
+      "prompt": "Score 1-10: does this job posting indicate investment in EHSQ (e.g. Director of Safety, Environmental Compliance Lead, EHSQ Administrator)? Note stated tech initiatives.",
+      "source_type": "api",
+      "context_depth": false,
+      "threshold": 6,
+      "budget": 6,
+      "cadence": "Every 3 days",
+      "segments": [
+        "commercial",
+        "enterprise",
+        "gov",
+        "healthcare"
+      ]
+    },
+    {
+      "key_name": "relationship",
+      "label": "Relationship",
+      "has_prompt": false,
+      "is_active": true,
+      "prompt": "(Deterministic) Match account against CRM database. No LLM query.",
+      "source_type": "crm",
+      "context_depth": false,
+      "threshold": 0,
+      "budget": 2,
+      "cadence": "Monthly",
+      "segments": [
+        "commercial",
+        "enterprise",
+        "gov",
+        "healthcare"
+      ]
+    },
+    {
+      "key_name": "accreditation",
+      "label": "Accreditation cycle",
+      "has_prompt": true,
+      "is_active": true,
+      "prompt": "Score 1-10: does this indicate an upcoming accreditation survey (like ISO 45001, Joint Commission) creating urgency for audit-ready documentation systems?",
+      "source_type": "websearch",
+      "context_depth": true,
+      "threshold": 6,
+      "budget": 5,
+      "cadence": "Monthly",
       "segments": [
         "healthcare",
+        "commercial",
         "enterprise"
-      ],
-      "owner_email": "priya.nair@yourcompany.io",
-      "crm_connected": true
-    },
-    {
-      "id": "federal-sa",
-      "name": "Federal Safety Agency",
-      "group_code": "FED",
-      "is_child": false,
-      "is_customer": false,
-      "segments": [
-        "gov"
-      ],
-      "owner_email": "james.wu@yourcompany.io",
-      "crm_connected": false
-    },
-    {
-      "id": "apex-ind",
-      "name": "Apex Industrial — Quality Div.",
-      "group_code": "MW",
-      "is_child": false,
-      "is_customer": false,
-      "segments": [
-        "commercial"
-      ],
-      "owner_email": "sarah.chen@yourcompany.io",
-      "crm_connected": true
-    },
-    {
-      "id": "csv-1781977219210-0",
-      "name": "Account Name",
-      "group_code": "Region",
-      "is_child": false,
-      "is_customer": false,
-      "segments": [
-        "segments"
-      ],
-      "owner_email": "Owner Email",
-      "crm_connected": false
+      ]
     }
   ],
-  "signals": [
-    {
-      "account_id": "federal-sa",
-      "column_key": "rfp",
-      "score": 9,
-      "signal_date": "2d ago",
-      "summary": "Federal Safety Agency posted a sources-sought notice for cloud-based incident and injury tracking software across regional offices.",
-      "why_matters": "This maps strongly to EHSQ use cases such as incident management, OSHA reporting, workflow automation, and audit-ready documentation. Sales should respond before the RFI deadline and use the outreach angle: modernizing injury tracking and compliance reporting before formal RFP requirements are locked.",
-      "source_name": "SAM.gov",
-      "excerpt": "\"Agency seeks information from vendors offering cloud-based incident tracking systems capable of log automation across regional offices...\""
-    }
-  ]
+  "sources": [],
+  "crmSettings": [],
+  "signals": [],
+  "knowledgeBase": [],
+  "adminSettings": {
+    "modelSpeed": "standard",
+    "resolverEnabled": true,
+    "outputCrmEnabled": true,
+    "outputOwnerEnabled": true,
+    "outputRevopsEnabled": true,
+    "revopsEmail": "revops@ehsqsignalengine.com",
+    "spendThisWeek": "0.00",
+    "syncsToday": 0,
+    "autoResolvedThisWeek": 0,
+    "pendingReviewThisWeek": 0
+  },
+  "crmSyncLogs": []
 }
