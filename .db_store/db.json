@@ -1,0 +1,103 @@
+{
+  "accounts": [
+    {
+      "id": "acme-parent",
+      "name": "Acme Industrial Group",
+      "group_code": "MW",
+      "is_child": false,
+      "is_customer": true,
+      "segments": [
+        "commercial",
+        "enterprise"
+      ],
+      "owner_email": "sarah.chen@yourcompany.io",
+      "crm_connected": true
+    },
+    {
+      "id": "acme-ops",
+      "name": "Acme Industrial — Operations Div.",
+      "group_code": "MW",
+      "is_child": true,
+      "is_customer": false,
+      "segments": [
+        "commercial"
+      ],
+      "owner_email": "sarah.chen@yourcompany.io",
+      "crm_connected": true
+    },
+    {
+      "id": "meridian",
+      "name": "Meridian Environmental Services",
+      "group_code": "SW",
+      "is_child": false,
+      "is_customer": false,
+      "segments": [
+        "commercial",
+        "enterprise"
+      ],
+      "owner_email": "james.wu@yourcompany.io",
+      "crm_connected": true
+    },
+    {
+      "id": "westbrook",
+      "name": "Westbrook Health System",
+      "group_code": "SE",
+      "is_child": false,
+      "is_customer": false,
+      "segments": [
+        "healthcare",
+        "enterprise"
+      ],
+      "owner_email": "priya.nair@yourcompany.io",
+      "crm_connected": true
+    },
+    {
+      "id": "federal-sa",
+      "name": "Federal Safety Agency",
+      "group_code": "FED",
+      "is_child": false,
+      "is_customer": false,
+      "segments": [
+        "gov"
+      ],
+      "owner_email": "james.wu@yourcompany.io",
+      "crm_connected": false
+    },
+    {
+      "id": "apex-ind",
+      "name": "Apex Industrial — Quality Div.",
+      "group_code": "MW",
+      "is_child": false,
+      "is_customer": false,
+      "segments": [
+        "commercial"
+      ],
+      "owner_email": "sarah.chen@yourcompany.io",
+      "crm_connected": true
+    },
+    {
+      "id": "csv-1781977219210-0",
+      "name": "Account Name",
+      "group_code": "Region",
+      "is_child": false,
+      "is_customer": false,
+      "segments": [
+        "segments"
+      ],
+      "owner_email": "Owner Email",
+      "crm_connected": false
+    }
+  ],
+  "signals": [
+    {
+      "account_id": "federal-sa",
+      "column_key": "rfp",
+      "score": 9,
+      "signal_date": "2d ago",
+      "summary": "Federal Safety Agency posted a sources-sought notice for cloud-based incident and injury tracking software across regional offices.",
+      "why_matters": "This maps strongly to EHSQ use cases such as incident management, OSHA reporting, workflow automation, and audit-ready documentation. Sales should respond before the RFI deadline and use the outreach angle: modernizing injury tracking and compliance reporting before formal RFP requirements are locked.",
+      "source_name": "SAM.gov",
+      "excerpt": "\"Agency seeks information from vendors offering cloud-based incident tracking systems capable of log automation across regional offices...\""
+    }
+  ]
+}
