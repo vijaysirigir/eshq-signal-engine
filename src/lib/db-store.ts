@@ -84,7 +84,14 @@ const isSupabaseConfigured = supabaseUrl && supabaseAnonKey;
 const supabase = isSupabaseConfigured ? createClient(supabaseUrl, supabaseAnonKey) : null;
 
 // Initial Seed Data Definitions
-const seedAccounts: Account[] = [];
+const seedAccounts: Account[] = [
+  { id: 'acme-parent', name: 'Acme Industrial Group', group_code: 'MW', is_child: false, is_customer: true, segments: ['commercial', 'enterprise'], owner_email: 'sarah.chen@yourcompany.io', crm_connected: true },
+  { id: 'acme-ops', name: 'Acme Industrial — Operations Div.', group_code: 'MW', is_child: true, is_customer: false, segments: ['commercial'], owner_email: 'sarah.chen@yourcompany.io', crm_connected: true },
+  { id: 'meridian', name: 'Meridian Environmental Services', group_code: 'SW', is_child: false, is_customer: false, segments: ['commercial', 'enterprise'], owner_email: 'james.wu@yourcompany.io', crm_connected: true },
+  { id: 'westbrook', name: 'Westbrook Health System', group_code: 'SE', is_child: false, is_customer: false, segments: ['healthcare', 'enterprise'], owner_email: 'priya.nair@yourcompany.io', crm_connected: true },
+  { id: 'federal-sa', name: 'Federal Safety Agency', group_code: 'FED', is_child: false, is_customer: false, segments: ['gov'], owner_email: 'james.wu@yourcompany.io', crm_connected: false },
+  { id: 'apex-ind', name: 'Apex Industrial — Quality Div.', group_code: 'MW', is_child: false, is_customer: false, segments: ['commercial'], owner_email: 'sarah.chen@yourcompany.io', crm_connected: true },
+];
 
 const seedColumns: SignalColumn[] = [
   {
@@ -167,13 +174,165 @@ const seedColumns: SignalColumn[] = [
   }
 ];
 
-const seedSources: AccountSource[] = [];
+const seedSources: AccountSource[] = [
+  { account_id: 'acme-parent', column_key: 'rfp', status: 'na' },
+  { account_id: 'acme-parent', column_key: 'enforcement', status: 'na' },
+  { account_id: 'acme-parent', column_key: 'budget', status: 'na' },
+  { account_id: 'acme-parent', column_key: 'hiring', status: 'na' },
+  { account_id: 'acme-parent', column_key: 'accreditation', status: 'na' },
+  
+  { account_id: 'acme-ops', column_key: 'rfp', status: 'auto', source_label: 'Auto: state procurement portal' },
+  { account_id: 'acme-ops', column_key: 'enforcement', status: 'configured', source_label: 'Regulatory enforcement feed — Acme facilities' },
+  { account_id: 'acme-ops', column_key: 'budget', status: 'configured', source_label: 'Public financial disclosures' },
+  { account_id: 'acme-ops', column_key: 'hiring', status: 'configured', source_label: 'LinkedIn Jobs — Acme Ops' },
+  { account_id: 'acme-ops', column_key: 'accreditation', status: 'na' },
 
-const seedCrmSettings: CrmSettings[] = [];
+  { account_id: 'meridian', column_key: 'rfp', status: 'configured', source_label: 'State procurement portal — Meridian' },
+  { account_id: 'meridian', column_key: 'enforcement', status: 'configured', source_label: 'EPA ECHO — Meridian facilities' },
+  { account_id: 'meridian', column_key: 'budget', status: 'auto', source_label: 'Auto: company financial filings' },
+  { account_id: 'meridian', column_key: 'hiring', status: 'missing' },
+  { account_id: 'meridian', column_key: 'accreditation', status: 'na' },
 
-const seedSignals: DetectedSignal[] = [];
+  { account_id: 'westbrook', column_key: 'rfp', status: 'configured', source_label: 'Regional hospital procurement board' },
+  { account_id: 'westbrook', column_key: 'enforcement', status: 'configured', source_label: 'State health dept enforcement log' },
+  { account_id: 'westbrook', column_key: 'budget', status: 'auto', source_label: 'Auto: hospital financial disclosures' },
+  { account_id: 'westbrook', column_key: 'hiring', status: 'missing' },
+  { account_id: 'westbrook', column_key: 'accreditation', status: 'missing' },
 
-const seedKnowledgeBase: KnowledgeBaseItem[] = [];
+  { account_id: 'federal-sa', column_key: 'rfp', status: 'configured', source_label: 'SAM.gov Opportunities API' },
+  { account_id: 'federal-sa', column_key: 'enforcement', status: 'na' },
+  { account_id: 'federal-sa', column_key: 'budget', status: 'configured', source_label: 'Federal budget justification docs' },
+  { account_id: 'federal-sa', column_key: 'hiring', status: 'configured', source_label: 'USAJobs.gov API' },
+  { account_id: 'federal-sa', column_key: 'accreditation', status: 'na' },
+
+  { account_id: 'apex-ind', column_key: 'rfp', status: 'auto', source_label: 'Auto: state procurement portal' },
+  { account_id: 'apex-ind', column_key: 'enforcement', status: 'missing' },
+  { account_id: 'apex-ind', column_key: 'budget', status: 'missing' },
+  { account_id: 'apex-ind', column_key: 'hiring', status: 'auto', source_label: 'Auto: Indeed / LinkedIn Jobs' },
+  { account_id: 'apex-ind', column_key: 'accreditation', status: 'na' }
+];
+
+const seedCrmSettings: CrmSettings[] = [
+  { account_id: 'acme-parent', crm_type: 'salesforce', sync_direction: 'write', sync_field: 'Signal_Alert__c' },
+  { account_id: 'acme-ops', crm_type: 'salesforce', sync_direction: 'write', sync_field: 'Signal_Alert__c' },
+  { account_id: 'meridian', crm_type: 'salesforce', sync_direction: 'write', sync_field: 'Signal_Alert__c' },
+  { account_id: 'westbrook', crm_type: 'salesforce', sync_direction: 'write', sync_field: 'Signal_Alert__c' },
+  { account_id: 'federal-sa', crm_type: 'none', sync_direction: 'none', sync_field: '' },
+  { account_id: 'apex-ind', crm_type: 'salesforce', sync_direction: 'write', sync_field: 'Signal_Alert__c' },
+];
+
+const seedSignals: DetectedSignal[] = [
+  {
+    account_id: 'acme-ops',
+    column_key: 'budget',
+    score: 8,
+    signal_date: '1w ago',
+    summary: 'Acme Industrial Group allocates $3.8M for modernization of operational compliance tracking and reporting infrastructure, replacing legacy case management tools.',
+    why_matters: 'Modernizing operational compliance and incident tracking is a direct EHSQ software requirement. Sales should target Acme Ops division before formal procurement starts.',
+    source_name: 'Public financial disclosures',
+    excerpt: '"...allocates $3.8M for modernization of operational compliance tracking and reporting infrastructure, replacing legacy case management tools..."'
+  },
+  {
+    account_id: 'acme-ops',
+    column_key: 'hiring',
+    score: 8,
+    signal_date: '4d ago',
+    summary: 'Hiring: Compliance Systems Manager to lead modernization of safety and compliance systems.',
+    why_matters: 'Pairs with the approved $3.8M compliance budget modernization initiative. Reach out directly to this new systems manager to guide their vendor evaluation.',
+    source_name: 'LinkedIn Jobs',
+    excerpt: '"...will lead modernization of the division\'s compliance tracking systems, partnering with IT on vendor selection..."'
+  },
+  {
+    account_id: 'meridian',
+    column_key: 'enforcement',
+    score: 5,
+    signal_date: '2w ago',
+    summary: 'Meridian cited $2,100 for late incident-report filings.',
+    why_matters: 'Low dollar amount administrative penalty. Indicates potential workflow gaps in filing, but not yet an urgent enterprise software evaluation trigger.',
+    source_name: 'Regulatory enforcement feed',
+    excerpt: '"...assessed a $2,100 administrative penalty for failure to file timely incident reports within the required window..."'
+  },
+  {
+    account_id: 'westbrook',
+    column_key: 'rfp',
+    score: 9,
+    signal_date: '4d ago',
+    summary: 'RFP: Quality Management System (QMS) supporting documentation, audit trail, and corrective actions (CAPA) tracking across regional health facilities.',
+    why_matters: 'Strong direct fit for Quality management solution. Sales should immediately coordinate response matching Westbrook\'s explicit bid timeline.',
+    source_name: 'Regional hospital procurement board',
+    excerpt: '"Westbrook Health seeks a quality management system supporting documentation, audit trail, and corrective action tracking across all regional facilities..."'
+  },
+  {
+    account_id: 'westbrook',
+    column_key: 'enforcement',
+    score: 9,
+    signal_date: '6d ago',
+    summary: 'State health audit issues $26,000 compliance penalty for inadequate records management and audit trail.',
+    why_matters: 'This fine occurred a few days before Westbrook issued the QMS RFP. The combination of a recent audit fine and an active RFP indicates extreme urgency and budget approval.',
+    source_name: 'State health dept enforcement log',
+    excerpt: '"...enforcement action cites inadequate records management and audit trail at a regional health facility..."'
+  },
+  {
+    account_id: 'federal-sa',
+    column_key: 'rfp',
+    score: 9,
+    signal_date: '2d ago',
+    summary: 'Federal Safety Agency posted a sources-sought notice for cloud-based incident and injury tracking software across regional offices.',
+    why_matters: 'This maps strongly to EHSQ use cases such as incident management, OSHA reporting, workflow automation, and audit-ready documentation. Sales should respond before the RFI deadline and use the outreach angle: modernizing injury tracking and compliance reporting before formal RFP requirements are locked.',
+    source_name: 'SAM.gov',
+    excerpt: '"Agency seeks information from vendors offering cloud-based incident tracking systems capable of log automation across regional offices..."'
+  },
+  {
+    account_id: 'federal-sa',
+    column_key: 'hiring',
+    score: 7,
+    signal_date: '1w ago',
+    summary: 'Hiring: Safety & Compliance Technology Specialist to support regional compliance system modernization.',
+    why_matters: 'Perfect operational pairing with the active incident tracking software sources-sought notice. The candidate will help run the new software.',
+    source_name: 'USAJobs.gov',
+    excerpt: '"...supporting a new compliance technology modernization initiative across regional field offices..."'
+  },
+  {
+    account_id: 'apex-ind',
+    column_key: 'accreditation',
+    score: 7,
+    signal_date: '5d ago',
+    summary: 'ISO 45001 safety recertification audit window opening in Q3.',
+    why_matters: 'Recertification prep is the prime window to sell audit management and corrective action tracking (CAPA) software, as manual documentation becomes a major risk.',
+    source_name: 'ISO body public schedule',
+    excerpt: '"...the triennial recertification audit window for this facility opens in the third quarter, requiring updated documentation and corrective action readiness..."'
+  }
+];
+
+const seedKnowledgeBase: KnowledgeBaseItem[] = [
+  {
+    id: 'kb-site',
+    title: 'Website',
+    source_type: 'website',
+    description: 'ehsq-signal-engine.io — 42 pages crawled',
+    excerpt: '"EHSQ Signal Engine unifies signal detection, account intelligence, and pipeline triggers for revenue teams targeting safety-critical, regulated, and compliance-driven buyers across commercial, enterprise, and public-sector verticals..."',
+    frequency_lbl: 'Re-crawled weekly',
+    updated_at: '3d ago'
+  },
+  {
+    id: 'kb-reviews',
+    title: 'Reviews',
+    source_type: 'reviews',
+    description: 'Pasted excerpts — G2 / Capterra',
+    excerpt: '"Buyers consistently cite ease of standardizing safety workflows across sites and departments, and audit-readiness for regulatory inspections, as top reasons for adoption..."',
+    frequency_lbl: '18 excerpts',
+    updated_at: '1w ago'
+  },
+  {
+    id: 'kb-comm',
+    title: 'Community',
+    source_type: 'community',
+    description: 'Pasted excerpts — practitioner forums and LinkedIn groups',
+    excerpt: '"Teams across regulated industries discuss disconnected, spreadsheet-based workflows ahead of audits and renewal cycles, frequently citing budget approvals as the trigger to evaluate alternatives..."',
+    frequency_lbl: '12 excerpts',
+    updated_at: '1w ago'
+  }
+];
 
 // Helper to Load/Save JSON DB
 interface LocalDatabase {
